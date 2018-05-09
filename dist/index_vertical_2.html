@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <title>治安-竖版</title>
+
+</head>
+<body>
+
+<!-- 依赖 jQuery -->
+<script src="../dep/jquery/2.2.4/jquery.js"></script>
+<!-- 核心文件 -->
+<script src="./asset/js/locationMap.js"></script>
+
+<div class="container" style="width: 760px; height: 1080px; background: gray;">
+
+    <!--
+        【style="width: 650px; height: 1920px;"】设置画布的尺寸
+        【data-toggle="LocationMap"】标记为“LocationMap”，当页面DOM树构建完毕后 会对其进行初始化。
+        【data-options】设置参数
+        【webSocket_url】WebSocket，需要连接的URL
+        【webSocket_onOpen】WebSocket，建立连接后的回调函数（名称）
+        【webSocket_onMessage】WebSocket，接收到消息后的回调函数（名称）
+        【webSocket_onClose】WebSocket，关闭连接后的回调函数（名称）
+        【webSocket_onError】WebSocket，连接出错后的回调函数（名称）
+        【personInfoListUrl】请求 人员信息列表 的URL
+        【onClickPerson】点击人员位置标签后的回调函数（名称）
+        【resourcesDir】资源目录
+        【positionConverter】转换器，将服务器推送过来的坐标进行转换的函数（名称）
+    -->
+    <div style="width: 650px; height: 1920px;"
+         data-toggle="LocationMap"
+         data-options='{
+                "webSocket_url": "ws://localhost:8080/pkui/noauth/websocket/getPosition",
+                "webSocket_onOpen": "establishSocketCallback",
+                "webSocket_onMessage": "receivedMessageCallback",
+                "webSocket_onClose": "closeSocketCallback",
+                "webSocket_onError": "socketErrorCallback",
+                "personInfoListUrl": "../test/personInfoListData.json",
+                "onClickPerson": "clickPersonCallback",
+                "resourcesDir": "./asset/",
+                "positionConverter": "positionConverter"
+             }'
+
+    >
+    </div>
+
+</div>
+
+<script>
+
+    /**
+     * @description CAD图坐标 转 2D坐标
+     * @param pos
+     * @return {{x: number, y: number}}
+     */
+    function positionConverter ( pos ) {
+        var
+            cad_x = pos.x,
+            cad_y = pos.y,
+            x,
+            y
+        ;
+
+        x = ( cad_x - 962 ) / 26.225806451612904 + 72;
+        y = ( cad_y - 714 ) / -26.16446124763705 + 606;
+
+        return {
+            x: y,
+            y: -(x -1920)
+        };
+    }
+
+    /**
+     * @description 连接 web socket 后，服务器发送数据后的回调函数
+     * @param event
+     */
+    function receivedMessageCallback( event ) {
+
+    }
+
+    /**
+     * @description 点击 位置标签后 的回调函数
+     * @param position {{id: string, name: string, x: number, y: number}}
+     * @param position.id {{string}} 人员ID
+     * @param position.name {{string}} 人员名称
+     * @param position.x {{number}} 服务器返回的X坐标
+     * @param position.y {{number}} 服务器返回的Y坐标
+     */
+    function clickPersonCallback( position ) {
+        console.info( position );
+    }
+
+    /**
+     * @description web socket 连接出错后的回调函数
+     */
+    function socketErrorCallback() {
+
+        LocationMap.markPosition( { cmd: 2, id: "56780", x: 24824, y: 8269 } );
+        LocationMap.markPosition( { cmd: 2, id: "56781", x: 2940, y: 12564 } );
+        LocationMap.markPosition( { cmd: 2, id: "56782", x: 32630, y: 13000 } );
+        LocationMap.markPosition( { cmd: 2, id: "56783", x: 33518, y: 2137 } );
+    }
+
+
+</script>
+
+</body>
+</html>
