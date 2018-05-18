@@ -353,15 +353,15 @@ tip: 在PSD量取背景图的X Y偏移时，要去掉墙体的厚度，最终得
 ## 9. 补充
 
   PkuLoc定位服务 cmd值释义
-  0 信号丢失 {id,regionId,regionName,regionCam}
-  1 信号恢复 {id,x,y,regionId,regionName,regionCam}
-  2 坐标更新 {id,x,y}
-  3 激活 {id}
-  4 取消激活 {id}
-  5 进入区域 {tagId,regionId,regionName,regionCam,ioType,tagStat}
-  6 离开区域 {tagId,regionId,regionName,regionCam,ioType,tagStat}
-  7 电量低于20% {id}
-  8 电量恢复正常 {id}
+    ###0, 信号丢失 {id,regionId,regionName,regionCam}
+    ###1, 信号恢复 {id,x,y,regionId,regionName,regionCam}
+    ###2, 坐标更新 {id,x,y}
+    ###3, 激活 {id}
+    ###4, 取消激活 {id}
+    ###5, 进入区域 {tagId,regionId,regionName,regionCam,ioType,tagStat}
+    ###6, 离开区域 {tagId,regionId,regionName,regionCam,ioType,tagStat}
+    ###7, 电量低于20% {id}
+    ###8, 电量恢复正常 {id}
 
 tip:CAD图的尺寸精度为mm（毫米），服务器推送过来的坐标精度为cm（厘米）。
 所以转换器里的坐标数值 应该 除以10。
